@@ -1,18 +1,23 @@
-# rsplit
+ 
+ [ rs p lit ]
+
+--------------
 
 RSPLIT is a command-line program for the GNU operating system that randomly extracts a percentage of lines from a text file.  This program can be useful in processes relating to split-sample quality assurance and interpolation algorithm testing.
 
-To Install:
-run:
+--------------
+
+- Installation:
 
 autoreconf -vif
 ./configure
 make
 sudo make install
 
-- Bin Program: `rsplit`
+--------------
 
-```
+- Bin Program: rsplit
+
 Usage: rpslit [OPTIONS] [infile]
 
 Randomly extract a percentage of lines from a text file.
@@ -28,4 +33,3 @@ Options:
   --version 		Print version information and exit.
 
 Example: rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz
-```
