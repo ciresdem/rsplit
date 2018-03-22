@@ -1,13 +1,16 @@
 /*------------------------------------------------------------
- * rsplit.c : version 0.2.6 : mrl
+ *
+ * rsplit.c : version 0.2.7
  * 
- * Copyright (c) 2011 - 2016 Matthew Love <matthew.love@colorado.edu>
+ * Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018 Matthew Love
+ *
  * This file is liscensed under the GPL v.2 or later and 
  * is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details. 
  * <http://www.gnu.org/licenses/> 
+ *
  *--------------------------------------------------------------*/
 
 #include <stdio.h> 
@@ -16,7 +19,7 @@
 #include <getopt.h>
 #include <time.h>
 
-static char rsplit_version[] = "0.2.6";
+static char rsplit_version[] = "0.2.7";
 
 /* Flag set by `--version'. */
 static int version_flag;
@@ -214,7 +217,7 @@ main (int argc, char **argv) {
      we report the final status resulting from them. */
   if (version_flag) {
     printf("rsplit, version %s\n\
-Copyright (C) 2011 - 2016 Matthew Love <matth.love@colorado.edu>\n\
+Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018 Matthew Love\n\
 This file is liscensed under the GPL v.2 or later and\n\
 is distributed in the hope that it will be useful,\n\
 but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
