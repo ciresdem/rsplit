@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_CONFIG_AUX_DIR([./config])
-AC_INIT([rsplit], [0.2.7], [matthew.love@colorado.edu])
+AC_INIT([rsplit], [0.2.8], [matthew.love@colorado.edu])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 #AC_CONFIG_SRCDIR([.])
 
