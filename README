@@ -18,18 +18,18 @@ sudo make install
 
 - Bin Program: rsplit
 
-Usage: rpslit [OPTIONS] [infile]
+Usage: rpslit [OPTIONS]... [FILE]
 
-Randomly extract a percentage of lines from a text file.
+Randomly extract a percentage of lines from FILE.
 
-Options:
-  -p, --percent 	The percent of lines to randomly extract 
-			from the input.
-  -n, --number  	If set, will interpret the -p option as the total number of
-                	lines to extract, rather than as a percentage.
-  -l, --line-num 	Include line numbers in output.
-  -r, --remaining 	Send the lines that aren't extracted to stderr.
+  -p, --percent 	extract [-p percent] of points
+  -n, --number  	extract [-p number] of points.
+  -l, --line-num 	include line numbers in output.
+  -r, --remaining 	send the lines that aren't extracted to stderr.
+      --help		print this help menu and exit.
+      --version 	print version information and exit.
 
-  --version 		Print version information and exit.
+With no FILE, or when FILE is --, read standard input.
 
 Example: rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz
+

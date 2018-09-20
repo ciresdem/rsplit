@@ -131,7 +131,7 @@ rsplit(FILE *in, int rperc, int want_percent, int prline, int remain) {
 void
 usage()
 {
-  printf("Usage: rpslit [OPTIONS]... [FILE]\n\n\
+  fprintf(stderr, "Usage: rpslit [OPTIONS]... [FILE]\n\n\
 Randomly extract a percentage of lines from FILE.\n\
 \n\
   -p, --percent \textract [-p percent] of points\n\
