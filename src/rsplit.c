@@ -1,6 +1,6 @@
 /*------------------------------------------------------------
  *
- * rsplit.c : version 0.2.7
+ * rsplit.c : version 0.2.8
  * 
  * Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018 Matthew Love
  *
@@ -19,10 +19,11 @@
 #include <getopt.h>
 #include <time.h>
 
-static char rsplit_version[] = "0.2.7";
+static char rsplit_version[] = "0.2.8";
 
-/* Flag set by `--version'. */
+/* Flags set by user. */
 static int version_flag;
+static int help_flag;
 //---
 
 /*------------
@@ -53,24 +54,14 @@ linecnt(char* infile)
 /*-----------*/
 
 int
-read_file(char* infile, int rperc, int want_percent, int prline, int remain) {
-  FILE *in = fopen(infile, "r");
+rsplit(FILE *in, int rperc, int want_percent, int prline, int remain) {
+  //FILE *in = fopen(infile, "r");
   char tmp[1024] = {0x0};
   char **strs;
-  int recordcnt = 0, fcnt = linecnt(infile), rnum = rperc, bline = 0, brflag = 0;
+  int fcnt = 0, rnum = rperc, bline = 0, brflag = 0;
   int i, j, rline;
 
-  /* Let's check to make sure user entered rational values */
-  if (want_percent == 0 && rnum >= fcnt) {
-    fprintf(stderr,"rsplit: Error, you are attempting to extract more lines (%d) than are available (%d) in this file\n", rnum, fcnt);
-    exit(EXIT_FAILURE);
-  }
-  else if (want_percent == 1 && rnum >= 100) {
-    fprintf(stderr,"rsplit: Error, you are attempting to extract 100 percent or more lines from this file\n");
-    exit(EXIT_FAILURE);
-  }
-
-  strs = malloc(fcnt * sizeof(*strs));
+  strs = malloc(sizeof(*strs));
 
   /* Read in the file */
   if(in == NULL) {
@@ -80,9 +71,21 @@ read_file(char* infile, int rperc, int want_percent, int prline, int remain) {
 
   /* read a record */
   while(fgets(tmp, sizeof(tmp), in) !=0) {
-    strs[recordcnt] = malloc(strlen(tmp) + 1);
-    strcpy(strs[recordcnt], tmp);
-    recordcnt++;
+    char **temp = realloc(strs, (fcnt+1) * sizeof(*strs));
+    strs = temp;
+    strs[fcnt] = malloc(strlen(tmp) + 1);
+    strcpy(strs[fcnt], tmp);
+    fcnt++;
+  }
+
+  /* Let's check to make sure user entered rational values */
+  if (want_percent == 0 && rnum >= fcnt) {
+    fprintf(stderr,"rsplit: Error, you are attempting to extract more lines (%d) than are available (%d) in this file\n", rnum, fcnt);
+    exit(EXIT_FAILURE);
+  }
+  else if (want_percent == 1 && rnum >= 100) {
+    fprintf(stderr,"rsplit: Error, you are attempting to extract 100 percent or more lines from this file\n");
+    exit(EXIT_FAILURE);
   }
 
   /* Write out the random lines */
@@ -128,17 +131,19 @@ read_file(char* infile, int rperc, int want_percent, int prline, int remain) {
 void
 usage()
 {
-  printf("Usage: rpslit [OPTIONS] [infile]\n\n\
-Randomly extract a percentage of lines from a text file.\n\n\
-Options:\n\
-  -p, --percent \tThe percent of lines to randomly extract \n\t\t\tfrom the input.\n\
-  -n, --number  \tIf set, will interpret the -p option as the total number of\n\
-                \tlines to extract, rather than as a percentage.\n\
-  -l, --line-num \tInclude line numbers in output.\n\
-  -r, --remaining \tSend the lines that aren\'t extracted to stderr.\n\n\
-  --version \t\tPrint version information and exit.\n\n\
+  printf("Usage: rpslit [OPTIONS]... [FILE]\n\n\
+Randomly extract a percentage of lines from FILE.\n\
+\n\
+  -p, --percent \textract [-p percent] of points\n\
+  -n, --number  \textract [-p number] of points.\n\
+  -l, --line-num \tinclude line numbers in output.\n\
+  -r, --remaining \tsend the lines that aren\'t extracted to stderr.\n\
+      --help\t\tprint this help menu and exit.\n\
+      --version \tprint version information and exit.\n\n\
+With no FILE, or when FILE is --, read standard input.\n\n\
 Example: rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz\n\n\
 ");
+  exit (1);
 }
 //---
 
@@ -150,6 +155,7 @@ Example: rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz\n\n\
 int
 main (int argc, char **argv) {
   int c;
+  FILE* fp;
   char* fn;  
   int inflag = 0, pline_flag = 0, remaining_flag = 0,  percent_flag = 1;
   double rp=10;
@@ -159,9 +165,9 @@ main (int argc, char **argv) {
       {
 	/* These options set a flag. */
 	{"version", no_argument, &version_flag, 1},
+	{"help", no_argument, &help_flag, 1},
 	/* These options don't set a flag.
 	   We distinguish them by their indices. */
-	{"help", no_argument, 0, 'h'},
 	{"percent", required_argument, 0, 'p'},
 	{"number", required_argument, 0, 'n'},
 	{"line-num", no_argument, 0, 'l'},
@@ -171,7 +177,7 @@ main (int argc, char **argv) {
     /* getopt_long stores the option index here. */
     int option_index = 0;
     
-    c = getopt_long(argc, argv, "hp:nlr",
+    c = getopt_long(argc, argv, "p:nlr",
 		    long_options, &option_index);
     
     /* Detect the end of the options. */
@@ -188,9 +194,6 @@ main (int argc, char **argv) {
 	printf(" with arg %s", optarg);
       printf("\n");
       break;
-    case 'h':
-      usage();
-      exit(1);
     case 'p':
       rp = atof(optarg);
       break;
@@ -205,7 +208,8 @@ main (int argc, char **argv) {
       break;
     case '?':
       /* getopt_long already printed an error message. */
-      
+      fprintf(stderr,"Try 'rsplit --help' for more information.\n");
+      exit(0);      
       break;	  
     default:
       abort();
@@ -227,26 +231,23 @@ GNU General Public License for more details.\n\
 ", rsplit_version);
     exit (1);
   }
+  if (help_flag) usage();
   
   /* Print any remaining command line arguments (not options). */
-  if (optind < argc) {
-    if (inflag == 0) {
-      fn = (argv[optind++]);
-      inflag++;
+  fn = argv[optind];
+  if (fn) {
+    fp = fopen(fn, "r");
+    if (!fp) {
+      fprintf(stderr,"rsplit: Failed to open file: %s\n", fn);
+      exit(0);
     }
-    else {
-      printf  ("non-option ARGV-elements: " );
-      while (optind < argc) printf ("%s ", argv[ optind++ ]);
-      putchar ('\n');
-    }
+  } else {
+    fp = stdin;
+    fn = "stdin";
   }
-  if (inflag > 0) {
-    read_file(fn, rp, percent_flag, pline_flag, remaining_flag);
-  }
-  else {
-    usage();
-    exit(EXIT_FAILURE);
-  }
+
+  rsplit(fp, rp, percent_flag, pline_flag, remaining_flag);
+
   exit(1);
 }
 //---END
