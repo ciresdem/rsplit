@@ -26,36 +26,12 @@ static int version_flag;
 static int help_flag;
 //---
 
-/*------------
- * Line-Count 
-/*------------*/
-
-int
-linecnt(char* infile)
-{
-  char tmp[1024] = {0x0};
-  int recordcnt = 0;
-  FILE *in = fopen(infile, "r");
-  
-  if(in == NULL) {
-    perror("File open error");
-    exit(EXIT_FAILURE);
-  }
-
-  /* read a record and count the lines */
-  while(fgets(tmp, sizeof(tmp), in) != 0) recordcnt++;
-
-  fclose(in);
-  return recordcnt; 
-}
-
 /*-----------
  * Read-File 
 /*-----------*/
 
 int
 rsplit(FILE *in, int rperc, int want_percent, int prline, int remain) {
-  //FILE *in = fopen(infile, "r");
   char tmp[1024] = {0x0};
   char **strs;
   int fcnt = 0, rnum = rperc, bline = 0, brflag = 0;
