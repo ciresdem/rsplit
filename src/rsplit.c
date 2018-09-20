@@ -110,8 +110,8 @@ usage()
   fprintf(stderr, "Usage: rpslit [OPTIONS]... [FILE]\n\n\
 Randomly extract a percentage of lines from FILE.\n\
 \n\
-  -p, --percent \textract [-p percent] of points\n\
-  -n, --number  \textract [-p number] of points.\n\
+  -p, --percent \textract [-p percent] of lines.\n\
+  -n, --number  \textract [-p number] of lines.\n\
   -l, --line-num \tinclude line numbers in output.\n\
   -r, --remaining \tsend the lines that aren\'t extracted to stderr.\n\
       --help\t\tprint this help menu and exit.\n\
