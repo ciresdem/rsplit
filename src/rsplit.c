@@ -1,8 +1,8 @@
 /*------------------------------------------------------------
  *
- * rsplit.c : version 0.2.8
+ * rsplit.c : version 0.2.9
  * 
- * Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018 Matthew Love
+ * Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018, 2019 Matthew Love
  *
  * This file is liscensed under the GPL v.2 or later and 
  * is distributed in the hope that it will be useful,
@@ -19,7 +19,7 @@
 #include <getopt.h>
 #include <time.h>
 
-static char rsplit_version[] = "0.2.8";
+static char rsplit_version[] = "0.2.9";
 
 /* Flags set by user. */
 static int version_flag;
@@ -107,11 +107,11 @@ rsplit(FILE *in, int rperc, int want_percent, int prline, int remain) {
 void
 usage()
 {
-  fprintf(stderr, "Usage: rpslit [OPTIONS]... [FILE]\n\n\
+  fprintf(stderr, "Usage: rsplit [OPTIONS]... [FILE]\n\n\
 Randomly extract a percentage of lines from FILE.\n\
 \n\
   -p, --percent \textract [-p percent] of lines.\n\
-  -n, --number  \textract [-p number] of lines.\n\
+  -n, --number  \textract [-n number] of lines.\n\
   -l, --line-num \tinclude line numbers in output.\n\
   -r, --remaining \tsend the lines that aren\'t extracted to stderr.\n\
       --help\t\tprint this help menu and exit.\n\
@@ -197,7 +197,7 @@ main (int argc, char **argv) {
      we report the final status resulting from them. */
   if (version_flag) {
     printf("rsplit, version %s\n\
-Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018 Matthew Love\n\
+Copyright (C) 2010, 2011, 2012, 2013, 2016, 2017, 2018, 2019 Matthew Love\n\
 This file is liscensed under the GPL v.2 or later and\n\
 is distributed in the hope that it will be useful,\n\
 but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
