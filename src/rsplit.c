@@ -117,7 +117,11 @@ Randomly extract a percentage of lines from FILE.\n\
       --help\t\tprint this help menu and exit.\n\
       --version \tprint version information and exit.\n\n\
 With no FILE, or when FILE is --, read standard input.\n\n\
-Example: rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz\n\n\
+ Examples:\n\
+ %% rsplit test.xyz -p 20 -lr > test_rand20.xyz 2> test_base.xyz\n\
+\n\
+Report bugs to <matthew.love@colorado.edu>\n\
+CIRES DEM home page: <http://ciresgroups.colorado.edu/coastalDEM>\n\
 ");
   exit (1);
 }
