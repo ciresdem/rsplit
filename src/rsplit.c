@@ -157,7 +157,7 @@ main (int argc, char **argv) {
     /* getopt_long stores the option index here. */
     int option_index = 0;
     
-    c = getopt_long(argc, argv, "p:nlr",
+    c = getopt_long(argc, argv, "p:n:lr",
 		    long_options, &option_index);
     
     /* Detect the end of the options. */
@@ -178,6 +178,7 @@ main (int argc, char **argv) {
       rp = atof(optarg);
       break;
     case 'n':
+      rp = atof(optarg);
       percent_flag=0;
       break;
     case 'l':
